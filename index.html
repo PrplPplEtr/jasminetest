@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html ng-app="app">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
@@ -12,6 +12,9 @@
 </head>
 <body>
 
+<script type="text/javascript" src="angular/angular.min.js"></script>
+<script type="text/javascript" src="angular/angular-mocks.js"></script>
+<script type="text/javascript" src="controllers.js"></script>
 <script type="text/javascript">
 
 
@@ -21,7 +24,69 @@ describe("A suite", function() {
   });
 });
 
+describe('PasswordController', function() {
+	  beforeEach(module('app'));
 
+	  var $controller;
+
+	  beforeEach(inject(function(_$controller_){
+	    // The injector unwraps the underscores (_) from around the parameter names when matching
+	    $controller = _$controller_;
+	  }));
+
+	  describe('$scope.grade', function() {
+	    it('sets the strength to "strong" if the password length is >8 chars', function() {
+	      var $scope = {};
+	      var controller = $controller('PasswordController', { $scope: $scope });
+	      $scope.password = 'longerthaneightchars';
+	      $scope.grade();
+	      expect($scope.strength).toEqual('strong');
+	    });
+	    it('sets the strength to "weak" if the password length is <=3 chars', function() {
+		      var $scope = {};
+		      var controller = $controller('PasswordController', { $scope: $scope });
+		      $scope.password = 'wee';
+		      $scope.grade();
+		      expect($scope.strength).toEqual('weak');
+		    });
+
+	    it('sets the strength to "medium" if the password 3<length>8 chars', function() {
+	      var $scope = {};
+	      var controller = $controller('PasswordController', { $scope: $scope });
+	      $scope.password = 'short';
+	      $scope.grade();
+	      expect($scope.strength).toEqual('medium');
+	    });
+	  });
+	});
+
+describe("PanelsController",function(){
+	beforeEach(module('app'));
+	var $controller;
+	beforeEach(inject(function(_$controller_){
+		$controller=_$controller_;
+	}));
+
+	describe('$scope.activePanelIndex',function(){
+		it('intializes with a default value of 1 for the active index',function(){
+			var $scope={};
+			var controller=$controller('PanelsController',{$scope:$scope});
+			expect(controller.activePanelIndex).toEqual(1);
+		});
+		it('sets it\'s active index to a supplied value',function(){
+			var $scope={};
+			var controller=$controller('PanelsController',{$scope:$scope});
+			controller.setActiveIndex(2);
+			expect(controller.activePanelIndex).toEqual(2);
+		});
+		it('returns true value for isActive for active index',function(){
+			var $scope={};
+			var controller=$controller('PanelsController',{$scope:$scope});
+			controller.setActiveIndex(2);
+			expect(controller.isActive(2)).toBe(true);
+		});
+	});
+});
 </script>
 </body>
 </html>
