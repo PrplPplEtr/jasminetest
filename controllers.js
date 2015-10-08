@@ -1,5 +1,5 @@
 (function(){
-	var app=angular.module('app', []);
+	var app=angular.module('ControllerTest', []);
 
 	app.controller('PasswordController', function PasswordController($scope) {
 		$scope.password = '';
